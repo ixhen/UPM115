@@ -16,11 +16,22 @@ void loop() {
   // put your main code here, to run repeatedly:
 
   VAL_POT = analogRead(POT_PIN);
-  println(VAL_POT);
-  map(VAL_POT, 0, 1023, 0, 25);
+  //Serial.println(VAL_POT);
+  //map(VAL_POT, 0, 1023, 0, 25);
   //analogWrite(POT_PIN, VAL_POT);
-  println(VAL_POT);
-  delay(20);
+
+//if (Serial.available() > 0 ){
+  // print the temperature in the serial port
+  //Serial.println(celsius);
+  
+  Serial.println(map(VAL_POT, 0, 1023, 0, 25));
+  Serial.write(map(VAL_POT, 0, 1023, 0, 25));
+  delay(1000);
+  //}
+  
+  
+
+  // 
 
 /*
 if (Serial.available() > 0 ){
