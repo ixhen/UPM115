@@ -49,5 +49,5 @@ String encryptUserInput(String input){
   
   
   
-  return "";
+  return " ";
 }
