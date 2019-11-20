@@ -4,7 +4,7 @@ String userInput = "";
 String encryptedUserInput = "";
 //int shiftValue;
 
-boolean leaveDraw = false;
+
 
 // Serial port
 Serial myPort;
@@ -14,66 +14,46 @@ int state = 0;
  
 void setup() { 
   size(800, 800);
-  userPrompt();
-  //establishCommunicationToArduino();
-  //encryptUserInput(userInput,5);
-  
-  /*
-  if(leaveDraw) {
-   
-   encryptUserInput(userInput,5);
-    //delay()
-  }
-  */
+  establishCommunicationToArduino();
 }
  
 void draw() {
- //userPrompt();
- //encryptUserInput(userInput,getShiftValueFromArduino());
- /**/
- 
- if(leaveDraw){
-   encryptUserInput(userInput,5);
-   leaveDraw = false;
+  
    userPrompt();
-    //delay()
-  }
-  //delay(1000);
-
+   if (state==1){
+   
+   encryptUserInput(userInput,5);
+   state=0;
+   }
+   text ("Your encrypted text:  \n" + encryptedUserInput, 133, 633);
+   text ("The encrypting offset is" + (getShiftValueFromArduino()), 133,650); 
 }
- 
 void keyPressed() {
   if (key==ENTER||key==RETURN) {
-    leaveDraw = true;
-    state++;
+    
+    state=1;
   } else if(key == DELETE || key == BACKSPACE) {// TODO: If we press backspace, then delete the last character of the array
     //userInput += "2";
+    if (encryptedUserInput != ""){
     userInput = userInput.substring( 0, userInput.length()-1 );
   }
+}
   else
   userInput += key;
 }
 
 void userPrompt(){
-  
-  leaveDraw = true;
   background(255);
-  switch (state) {
-    // TODO: Change Background
-  case 0: // User is still inputing 
-    fill(0); 
-    text ("Please enter something and hit enter to go on \n" + userInput, 133, 333); 
-    break;
+  // TODO: Change Background
+  fill(0); 
+  text ("Enter original text:  \n" + userInput, 133, 333); 
+    
  
-  case 1: // User is done with inputing, i.e. has pressed enter
-    fill(255, 2, 2); 
-    //text ("Thanks \n" + userInput, 133, 633); 
-    text ("Thanks \n" + encryptedUserInput, 133, 633);
-    break;
-  }
+ 
 }
 
-String encryptUserInput(String input, int shiftValue){
+void encryptUserInput(String input, int shiftValue){
+  encryptedUserInput="";
   // Reference: https://codedost.com/css/java-program-caesar-cipheradditive-cipher/
   
   // Cast the string to char array
@@ -85,10 +65,8 @@ String encryptUserInput(String input, int shiftValue){
     
     encryptedUserInput += (char)asciiValueOfEncryptedCharacter;
   }
-  // 
   
-  //System.out.println(encryptedUserInput);
-  return encryptedUserInput;
+  
 }
 
 void establishCommunicationToArduino(){
