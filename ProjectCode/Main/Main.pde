@@ -1,17 +1,20 @@
+import processing.serial.*;
 
 String userInput = "";
 String encryptedUserInput;
+// Serial port
+Serial myPort;
 
 int state = 0; 
 //String result=""; 
  
 void setup() { 
   size(800, 800);
+  userPrompt();
+  establishCommunicationToArduino();
 }
  
 void draw() { 
- 
-  userPrompt();
  
 }
  
@@ -47,7 +50,15 @@ void userPrompt(){
 String encryptUserInput(String input){
   // Reference: https://codedost.com/css/java-program-caesar-cipheradditive-cipher/
   
+  return "";
+}
+
+void establishCommunicationToArduino(){
+  // List all the available serial ports:
+  printArray(Serial.list());
+
+  // Open the port where the Arduino is
+  myPort = new Serial(this, Serial.list()[32], 9600);
   
-  
-  return " ";
+  // To write on the port just add : myPort.write("A\n\0"); !!!
 }
