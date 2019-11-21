@@ -1,12 +1,18 @@
-int POT_PIN = A7;
-int VAL_POT;
-int BUT_PIN = 2;
-//int counter = 0;
+#include "U8glib.h"
+U8GLIB_SSD1306_128X64 u8g(13,11,2,3,4);
+int BUT_PIN = 5;
 boolean VAL;
+String input,encryptedInput;
+int encryptionOffset;
+String MsgReceived;
+String serialResponse = "";
+#define ARRAYSIZE 3
+//String[] parts;
 
 void setup() {
   // put your setup code here, to run once:
-  pinMode(POT_PIN, OUTPUT);
+  u8g.setFont(u8g_font_6x10);
+  u8g.setColorIndex(1); 
   pinMode(BUT_PIN, INPUT);
   
   // Initialize Serial
@@ -16,41 +22,55 @@ Serial.begin(9600);
 
 void loop() {
   // put your main code here, to run repeatedly:
-
-  VAL_POT = analogRead(POT_PIN);
-  VAL_POT= map(VAL_POT, 0, 1023, 0, 25);
-  VAL =digitalRead(BUT_PIN);
+  
+    VAL = digitalRead(BUT_PIN);
   
   if (VAL==HIGH){
-//    counter +=1;
+
     Serial.println(VAL);
-//    delay(2000);
+    
     }
   delay(100);
-  
-//  Serial.write(VAL_POT);
-//    delay(1000);
-  //map(VAL_POT, 0, 1023, 0, 25);
-  //analogWrite(POT_PIN, VAL_POT);
 
-//if (Serial.available() > 0 ){
-  // print the temperature in the serial port
-  //Serial.println(celsius);
+  if (Serial.available() > 0){
+      u8g.firstPage();
+//      MsgReceived = Serial.readString();
+      MsgReceived = Serial.readStringUntil("\n");
+//      String secondString = MsgReceived.substring(0,2);
+//      Serial.print(MsgReceived);
+//      parts = MsgReceived.split("-", 2);
+//      String part1 = parts[0]; // 004
+//      String part2 = parts[1]; // 034556-42
+//      Serial.print(part2);
+
+//  String one, two, three;
+//    char buf[sizeof(MsgReceived)];
+//    serialResponse.toCharArray(buf, sizeof(buf));
+//    char *p = buf;
+//    char *str;
+//    int i =0;
+//    String results[ARRAYSIZE];
+//    while ((str = strtok_r(p, "-", &p)) != NULL) // delimiter is the minus sign
+////      Serial.println(str);
+//      results[i] = str;
+//      i++;
+////      u8g.drawStr(20,30,str);
+      
+  do {
+//    String secondMessage
+//      Serial.println(MsgReceived);
+//    u8g.print(MsgReceived);
+//    u8g.print("MsgReceived");
+//    u8g.drawStr(20,20,MsgReceived);
+    u8g.setPrintPos(4, 22);
+    u8g.print(MsgReceived);
+//    u8g.drawStr(20,20,results[0]);
+//    u8g.drawStr(20,40,results[1]);
+//    u8g.drawStr(20,60,results[1]);
+//    u8g.drawStr(20,60,"encryptedInput");
+ } while(u8g.nextPage()); 
   
-//  Serial.println(map(VAL_POT, 0, 1023, 0, 25));
-//  Serial.write(map(VAL_POT, 0, 1023, 0, 25));
-  
-  //}
-  
+    }
   
 
-  // 
-
-/*
-if (Serial.available() > 0 ){
-  // print the temperature in the serial port
-  Serial.println(celsius);
-  }
-
-*/
 }

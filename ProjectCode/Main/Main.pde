@@ -20,30 +20,20 @@ void setup() {
  
 void draw() {
    
-   
    userPrompt();
    
-   
-   updateCounterValue();
+   updateCounterValue(); // ABOUT the debouncing of counter: 
    if (state==1){
-   //setShiftValueFromArduino();
-   //setShiftValueFromArduino();
-   //encryptUserInput(userInput,setShiftValueFromArduino());
-   //encryptUserInput(userInput,int(setShiftValueFromArduino()));
+   
    encryptUserInput(userInput,int(offset));
+   
+   sendEncryptedMessageBackToArduino();
    state=0;
    }
    text ("Your encrypted text:  \n" + encryptedUserInput, 133, 633);
    
    text ("The encrypting offset is: "+ offset, 133,660);
-   //text ("The encrypting offset is: "+  setShiftValueFromArduino(),133,660);
-   //text ("The encrypting offset is: "+ 5 ,133,660);
-   //text ("The encrypting offset is: "+  setShiftValueFromArduinoInteger(),133,660);
-   
-   
-   //text ("Your clean text:  \n" + inBufferClean, 133, 700);
-   
-     
+  
 }
 void keyPressed() {
   if (key==ENTER||key==RETURN) {
@@ -83,10 +73,8 @@ void encryptUserInput(String input, int shiftValue){
 }
 
 void establishCommunicationToArduino(){
-  // List all the available serial ports:
-  // Open the port where the Arduino is
+  
   myPort = new Serial(this, Serial.list()[32], 9600);
-  //myPort.bufferUntil('\n');
   // To write on the port just add : myPort.write("A\n\0"); !!!
 }
 
@@ -95,11 +83,10 @@ void updateCounterValue(){
   while (myPort.available() > 0) {
     
     String actual = myPort.readString();
-    //if (counter != null){
+    
       println(actual);
       offset++;
       
-       //offset
       }
 }
 
@@ -130,4 +117,8 @@ int setShiftValueFromArduinoInteger(){
      counter = 0;
   }
   return counter;
+}
+
+void sendEncryptedMessageBackToArduino(){
+  myPort.write(userInput + "-" + offset + "-" + encryptedUserInput + "\n" );
 }
