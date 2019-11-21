@@ -36,12 +36,6 @@ void loop() {
       u8g.firstPage();
 //      MsgReceived = Serial.readString();
       MsgReceived = Serial.readStringUntil("\n");
-//      String secondString = MsgReceived.substring(0,2);
-//      Serial.print(MsgReceived);
-//      parts = MsgReceived.split("-", 2);
-//      String part1 = parts[0]; // 004
-//      String part2 = parts[1]; // 034556-42
-//      Serial.print(part2);
 
 //  String one, two, three;
 //    char buf[sizeof(MsgReceived)];
@@ -64,8 +58,9 @@ void loop() {
 //    u8g.drawStr(20,20,MsgReceived);
     u8g.setPrintPos(4, 22);
     u8g.print(MsgReceived);
-//    u8g.drawStr(20,20,results[0]);
-//    u8g.drawStr(20,40,results[1]);
+//    u8g.println("\nuserInput-offset-encryptedUserInput");
+//    u8g.drawStr(20,20,"userInput");
+    u8g.drawStr(0,40,"Inp-Offset-EncInp");
 //    u8g.drawStr(20,60,results[1]);
 //    u8g.drawStr(20,60,"encryptedInput");
  } while(u8g.nextPage()); 

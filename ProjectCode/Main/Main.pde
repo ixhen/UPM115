@@ -4,6 +4,7 @@ String userInput = "", inBuffer="",inBufferClean="";
 String encryptedUserInput = "";
 //int shiftValue;
 int offset;
+PImage bg;
 
 
 // Serial port
@@ -16,10 +17,13 @@ void setup() {
   size(800, 800);
   establishCommunicationToArduino();
   offset = 0;
+  bg=loadImage("upm.png");
+ 
 }
  
 void draw() {
-   
+  encryptedUserInput = "";
+   background(bg);
    userPrompt();
    
    updateCounterValue(); // ABOUT the debouncing of counter: 
@@ -30,9 +34,10 @@ void draw() {
    sendEncryptedMessageBackToArduino();
    state=0;
    }
-   text ("Your encrypted text:  \n" + encryptedUserInput, 133, 633);
    
-   text ("The encrypting offset is: "+ offset, 133,660);
+   text ("Your encrypted text:  \n" + encryptedUserInput, 30, 380);
+   
+   text ("The encrypting offset is: "+ offset, 30,340);
   
 }
 void keyPressed() {
@@ -49,10 +54,11 @@ void keyPressed() {
 }
 
 void userPrompt(){
-  background(255);
+  //background(255);
   // TODO: Change Background
-  fill(0); 
-  text ("Enter original text:  \n" + userInput, 133, 333); 
+  fill(255);
+  textSize(18);
+  text ("Enter original text:  \n" + userInput, 30, 50); 
   
 }
 
