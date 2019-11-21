@@ -15,6 +15,7 @@ int state = 0;
 void setup() { 
   size(800, 800);
   establishCommunicationToArduino();
+  offset = 0;
 }
  
 void draw() {
@@ -23,20 +24,24 @@ void draw() {
    userPrompt();
    
    
-   
+   updateCounterValue();
    if (state==1){
    //setShiftValueFromArduino();
    //setShiftValueFromArduino();
    //encryptUserInput(userInput,setShiftValueFromArduino());
-   encryptUserInput(userInput,int(setShiftValueFromArduino()));
+   //encryptUserInput(userInput,int(setShiftValueFromArduino()));
+   encryptUserInput(userInput,int(offset));
    state=0;
    }
    text ("Your encrypted text:  \n" + encryptedUserInput, 133, 633);
    
-   //text ("The encrypting offset is: "+str(offset), 133,660);
-   text ("The encrypting offset is: "+ setShiftValueFromArduino(),133,660);
+   text ("The encrypting offset is: "+ offset, 133,660);
+   //text ("The encrypting offset is: "+  setShiftValueFromArduino(),133,660);
+   //text ("The encrypting offset is: "+ 5 ,133,660);
+   //text ("The encrypting offset is: "+  setShiftValueFromArduinoInteger(),133,660);
    
-   text ("Your clean text:  \n" + inBufferClean, 133, 700);
+   
+   //text ("Your clean text:  \n" + inBufferClean, 133, 700);
    
      
 }
@@ -85,36 +90,44 @@ void establishCommunicationToArduino(){
   // To write on the port just add : myPort.write("A\n\0"); !!!
 }
 
-String setShiftValueFromArduino(){
-  if (myPort.available() > 0) {
-    println(myPort.readString());
+void updateCounterValue(){
+  
+  while (myPort.available() > 0) {
     
-    String myString = myPort.readString();
-    
-    //println(myPort.readStringUntil('n'));
-    //char one = myPort.readString().charAt(0);
-    if(myPort.readString() != null){
-      println("five");
-      return myPort.readString().substring(myString.length()-3,myString.length()-1);
-    }
-    else return "onr";
-    
-    
-    //return myPort.readString().substring(0,2);
-   
-    //offset = int (one);
-    //println(offset);
-    
-    //println();
-    //println(offset);
+    String actual = myPort.readString();
+    //if (counter != null){
+      println(actual);
+      offset++;
       
-    //offset = int(myPort.readString().replaceAll("\\P{InBasic_Latin}", ""));
-    
-    
-    //inBufferClean = inBuffer.substring(2);
-    
-    //offset = myPort.read();
-    //offset = int(inBufferClean);
-  }else {return "dd";
+       //offset
+      }
 }
+
+String setShiftValueFromArduino(){
+  String counter;
+  if (myPort.available() > 0) {
+    
+    counter = myPort.readString();
+    //if (counter != null){
+      println(counter);
+      
+      }
+  else{ counter = "0";
+    }
+    return counter;
+}
+
+int setShiftValueFromArduinoInteger(){
+  int counter;
+  if (myPort.available() > 0) {
+    
+    counter = int(myPort.readString());
+    
+    println(counter);
+    
+    //return counter;
+   }else {
+     counter = 0;
+  }
+  return counter;
 }
