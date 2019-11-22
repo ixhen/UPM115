@@ -1,68 +1,45 @@
-#include "U8glib.h"
+#include "U8glib.h" 
 U8GLIB_SSD1306_128X64 u8g(13,11,2,3,4);
-int BUT_PIN = 5;
+
+int BUT_PIN = 5;  // Initialize button pin number 5
 boolean VAL;
 String input,encryptedInput;
 int encryptionOffset;
 String MsgReceived;
 String serialResponse = "";
-#define ARRAYSIZE 3
-//String[] parts;
 
 void setup() {
   // put your setup code here, to run once:
-  u8g.setFont(u8g_font_6x10);
-  u8g.setColorIndex(1); 
-  pinMode(BUT_PIN, INPUT);
+  u8g.setFont(u8g_font_6x10); // Sets the font of the characters on screen
+  u8g.setColorIndex(1); // Sets the color index of the characters on screen
+  pinMode(BUT_PIN, INPUT); // Sets the button pin as input
   
   // Initialize Serial
-Serial.begin(9600);
+Serial.begin(9600); // Initialize the Serial connection to 9600 bouds
 
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
   
-    VAL = digitalRead(BUT_PIN);
+    VAL = digitalRead(BUT_PIN); // Read the value of the button
   
-  if (VAL==HIGH){
+  if (VAL==HIGH){ // If it is pressed
 
-    Serial.println(VAL);
+    Serial.println(VAL); // Send that value to Processing program through the serial connection
     
     }
   delay(100);
 
-  if (Serial.available() > 0){
+  if (Serial.available() > 0){ // If the Processing program has sent information on the serial connection
       u8g.firstPage();
-//      MsgReceived = Serial.readString();
-      MsgReceived = Serial.readStringUntil("\n");
+      MsgReceived = Serial.readStringUntil("\n"); // Read the message until a new line character is read
 
-//  String one, two, three;
-//    char buf[sizeof(MsgReceived)];
-//    serialResponse.toCharArray(buf, sizeof(buf));
-//    char *p = buf;
-//    char *str;
-//    int i =0;
-//    String results[ARRAYSIZE];
-//    while ((str = strtok_r(p, "-", &p)) != NULL) // delimiter is the minus sign
-////      Serial.println(str);
-//      results[i] = str;
-//      i++;
-////      u8g.drawStr(20,30,str);
       
   do {
-//    String secondMessage
-//      Serial.println(MsgReceived);
-//    u8g.print(MsgReceived);
-//    u8g.print("MsgReceived");
-//    u8g.drawStr(20,20,MsgReceived);
-    u8g.setPrintPos(4, 22);
-    u8g.print(MsgReceived);
-//    u8g.println("\nuserInput-offset-encryptedUserInput");
-//    u8g.drawStr(20,20,"userInput");
-    u8g.drawStr(0,40,"Inp-Offset-EncInp");
-//    u8g.drawStr(20,60,results[1]);
-//    u8g.drawStr(20,60,"encryptedInput");
+    u8g.setPrintPos(4, 22); // Set the coordinates where the String is going to be displayed
+    u8g.print(MsgReceived); // Display the message received
+    u8g.drawStr(0,40,"Inp-Offset-EncInp"); // Add a new line that explains the values above it are Input-Offset-EncryptedValue
  } while(u8g.nextPage()); 
   
     }
